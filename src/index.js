@@ -64,6 +64,11 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
                 e.preventDefault();
                 if ( isFormValid(form) ) {
                     addToTheTodoList(form, todos); // creates and insert new todo in DOM
+
+                    const allTasks = document.querySelector('.all-tasks'); // these three lines (68-70) need to highlight 
+                    const tasksGroup = document.querySelector('.tasks ul'); // "all tasks" button after
+                    highlightChosenTaskGroup(tasksGroup, allTasks); // creating a new task
+                    
                     showAllTodos(todos);
                     hideNewTaskWindow();
                     form.reset();

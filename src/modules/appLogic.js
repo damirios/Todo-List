@@ -104,6 +104,7 @@ const sortCurrentTodo = function(clickedObject, todo) {
     const todoMonth = todoFullDate[1];
     const todoDate = todoFullDate[2];
     const todoDateObj = new Date(todoYear, todoMonth - 1, todoDate); //Date Obj for todo
+
     if (clickedObject.classList.contains('today')) { // checks if clicked object is "today"
         if ( isToday(todoYear, todoMonth, todoDate, currentYear, currentMonth, currentDate) ) {
             return todo;
@@ -137,7 +138,7 @@ const isToday = function(todoYear, todoMonth, todoDate, currentYear, currentMont
 
 const isWeek = function(todoDateObj, currentDateAndTime) { //function checks if todo's date and current date differs by no more than 1 week
     const differenceInDays = (todoDateObj - currentDateAndTime) / (1000 * 60 * 60 * 24);
-    if (differenceInDays <= 8 && differenceInDays >= 0) {
+    if (differenceInDays <= 7 && differenceInDays >= -1) {
         return true;
     } else {
         return false;

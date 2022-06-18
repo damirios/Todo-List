@@ -75,9 +75,6 @@ const compareFunction = function(first, second) { // sort by priority of todo an
 
 const showAllTodos = function(todos) {
     clearTodoContainer(); // clears todo container of all tasks and then we will create it again with chosen parameters
-    const allTasks = document.querySelector('.all-tasks'); // these three lines (12-14) need to highlight 
-    const tasksGroup = document.querySelector('.tasks ul'); // "all tasks" button after
-    highlightChosenTaskGroup(tasksGroup, allTasks); // creating a new task
     
     if (todos && todos.length > 0) {
         addExpirationStatus(todos);
