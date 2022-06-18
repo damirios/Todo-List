@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="header-row">
+                <div class="header__logo">
+                    <a href="#" class="logo">Todo List</a>
+                </div>
+                <div class="header__menu"></div>
+            </div>
+        </header>
+        <div class="sidebar">
+            <div class="tasks">
+                <div class="sidebar__title">Home</div>
+                <ul>
+                    <li class="today">Today</li>
+                    <li class="week">This week</li>
+                    <li class="month">This month</li>
+                    <li class="all-tasks chosen-task-group">All tasks</li>
+                </ul>
+            </div>
+            <div class="projects">
+                <div class="sidebar__title">Projects</div>
+                <ul>
+                    <li class="projects__create"><span>Add a project</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+            <div class="content__menu">
+                <div class="content__title">Today</div>
+                <div class="content__buttons">
+                    <button class="add-task">Add a task</button>
+                </div>
+            </div>
+            <div class="content__tasks">
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="footer-row">
+                <span>Copyright © damirios, 2022. <a href="https://github.com/damirios">My github page is here</a></span>
+            </div>
+        </footer>
+        <div class="new-task hidden">
+            <form action="#" class="new-task__form form">
+                <div class="form__closing-button"></div>
+                <div class="form__title">
+                    <!-- <label for="title">Title: </label> -->
+                    <input type="text" name="title" id="title" placeholder="Title: Make a video" required>
+                </div>
+                <div class="form__description">
+                    <!-- <label for="description">Description: </label> -->
+                    <textarea name="description" id="description" placeholder="Description: Make a video about Prey (2017)." required></textarea>
+                </div>
+                <div class="form__due-date">
+                    <label for="dueDate">Due Date: </label>
+                    <input type="date" name="dueDate" id="dueDate" required>
+                </div>
+                <div class="form__priority priority">
+                    <label>Priority: </label>
+                    <div class="priority__buttons">
+                        <input name="priority" type="radio" id="low" required>
+                        <label for="low" class="priority__low">Low</label>
+                        <input name="priority" type="radio" id="medium" required>
+                        <label for="medium" class="priority__medium">Medium</label>
+                        <input name="priority" type="radio" id="high" required>
+                        <label for="high" class="priority__high">High</label>
+                    </div>
+                </div>
+                <div class="form__submit">
+                    <button type="submit">Add Todo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
