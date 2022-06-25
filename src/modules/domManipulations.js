@@ -25,6 +25,7 @@ const hideNewTaskWindow = function() {
 }
 
 const createTodoBlockInDOM = function(todoData, todoExpiredStatus, todos) {
+    // console.log(todos);
     const tasksContainer = document.querySelector('.content__tasks');
 
     const todoBlock = document.createElement('div');

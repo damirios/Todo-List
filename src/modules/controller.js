@@ -72,20 +72,20 @@ const compareFunction = function(first, second) { // sort by priority of todo an
     }
 }
 
-const showAllTodos = function(todos, clickedObject) {
+const showAllTodos = function(todosForShow, allTodos, clickedObject) {
     clearTodoContainer(); // clears todo container of all tasks and then we will create it again with chosen parameters
     if (clickedObject) {
         showTodoGroupTitle(clickedObject);
     }
 
-    if (todos && todos.length > 0) {
-        addExpirationStatus(todos);
-        todos.sort(compareFunction);
+    if (todosForShow && todosForShow.length > 0) {
+        addExpirationStatus(todosForShow);
+        todosForShow.sort(compareFunction);
         
-        for (let i = 0; i < todos.length; i++) {
-            const todo = todos[i];
+        for (let i = 0; i < todosForShow.length; i++) {
+            const todo = todosForShow[i];
             if (todo) {
-                createTodoBlockInDOM(todo, isTodoExpired(todo), todos);
+                createTodoBlockInDOM(todo, isTodoExpired(todo), allTodos);
             }
         }
     }
@@ -96,6 +96,8 @@ const todoFunctions = function(todos, currentTodo, e) {
     if (clickedButton) {
         if ( clickedButton.classList.contains('delete-todo') ) {
             deleteTodo(currentTodo, todos);
+            showAllTodos(todos, todos);
+            console.log(todos);
         } else if ( clickedButton.classList.contains('edit-todo') ) {
             const editForm = openEditForm(); // opens edit form and returns it
             fillEditForm(currentTodo, editForm);
@@ -111,11 +113,11 @@ const todoFunctions = function(todos, currentTodo, e) {
                     e.preventDefault();
 
                     if ( isFormValid(editForm) ) {
-                        const newTodos = getChangedTodos(todo, todos, editForm);
+
+                        todos = getChangedTodos(todo, todos, editForm);
                         this.removeListener();
                         closeEditForm();
-                        showAllTodos(newTodos);
-                        console.log(newTodos);
+                        showAllTodos(todos, todos);
                     }
                 }
 

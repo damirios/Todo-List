@@ -44,7 +44,7 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
     todos.push(fourthTodo);
     // ==========================================================================
 
-    showAllTodos(todos);
+    showAllTodos(todos, todos);
 
     // Add Event Listeners for the new task form ===========================================
     const taskFunctions = function(e) {
@@ -82,7 +82,7 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
             if (clickedObject == addTaskWindowButton) { //check if clicked Object is "add task" button
                 showNewTaskWindow();
             } else if ( (clickedObject == editFormContainer && !editFormContainer.classList.contains('hidden') && 
-            !clickedObject.closest('.edit-task__form') ) || clickedObject == editFormCloseButton) { // if edit form is open. Then we close button clicked
+            !clickedObject.closest('.edit-task__form') ) || clickedObject == editFormCloseButton) { // if edit form is open. Then close button clicked
                 closeEditForm();
                 editForm.reset();
             }
@@ -94,11 +94,12 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
     const taskGroups = document.querySelector('.tasks ul'); //get sidebar task groups
 
     const taskGroupsFunctions = function(e) {
+        
         const clickedObject = e.target;
         if (clickedObject != taskGroups) {
             highlightChosenTaskGroup(taskGroups, clickedObject);
             const todosForShow = sortTasksAccordingToChosenTaskGroup(clickedObject, todos);
-            showAllTodos(todosForShow, clickedObject);
+            showAllTodos(todosForShow, todos, clickedObject);
         }
     }
 

@@ -1,8 +1,6 @@
 import {createErrorParagraph, deleteErrorParagraph} from './domManipulations';
 
-// let currentTodos;
-
-const todoFactory = function(form) {
+const todoFactory = function(form, checkStatus) {
     let todoObject = {}; // object that collects info from new task form!
     const formElements = form.elements;
     for (let i = 0; i < formElements.length - 1; i++) { // all fields except submit button
@@ -25,7 +23,7 @@ const todoFactory = function(form) {
             todoObject[element.name] = element.value;
         }
     }
-    todoObject.check = false;
+    todoObject.check = checkStatus;
     return todoObject;
 }
 
@@ -193,11 +191,12 @@ const isLeapYear = function(year) {
 }
 
 const sortTasksAccordingToChosenTaskGroup = function(clickedObject, todos) {
+    
     let todoListToShow = []; //current todoList that we going to show, we'll fill it
     if (todos.length > 0) {
         for (let i = 0; i < todos.length; i++) {
             const todo = todos[i];
-            const sortedTodo = sortCurrentTodo(clickedObject, todo);
+            const sortedTodo = sortCurrentTodo(clickedObject, todo); //either return todo or null
             todoListToShow.push(sortedTodo);
         }
     }
@@ -236,7 +235,7 @@ const deleteTodo = function(currentTodo, todos) {
 }
 
 const getChangedTodos = function(todo, todos, editForm) {
-    const newTodo = todoFactory(editForm);
+    const newTodo = todoFactory(editForm, todo.check);
     const todoIndexToReplace = todos.indexOf(todo);
 
     if (todoIndexToReplace != -1) {
@@ -244,5 +243,6 @@ const getChangedTodos = function(todo, todos, editForm) {
     }
     return todos;
 }
+
 
 export {todoFactory, isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, isTodoExpired, addExpirationStatus, deleteTodo, getChangedTodos}
