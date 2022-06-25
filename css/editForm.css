@@ -1,5 +1,6 @@
-/* NewTaskForm =========================================================== */
-.new-task {
+/* EditForm =========================================================== */
+
+.edit-task {
     position: fixed;
     z-index: 1;
     top: 0;
@@ -12,7 +13,7 @@
     padding: 0 15px;
     backdrop-filter: blur(7px);
 }
-.form {
+.edit-task form {
     flex: 0 1 800px;
     /* height: 100%; */
     display: flex;
@@ -27,7 +28,14 @@
     transform: scale(1);
     transition: all 0.3s ease 0.01s;
 }
-.form::before {
+.edit-task .hidden {
+    transform: scale(0);
+    transition: all 0s ease 0.3s;
+}
+.edit-task .hidden-form {
+    transform: scale(0);
+}
+.edit-task__form::before {
     content: '';
     position: absolute;
     width: 100%;
@@ -36,9 +44,8 @@
     left: 0;
     background-color: rgba(58, 238, 229, 0.767);
     border-radius: 10px 10px 0 0;
-
 }
-.form__name {
+.edit-form__name {
     position: absolute;
     top: 13px;
     left: 10px;
@@ -46,7 +53,7 @@
     font-size: 18px;
     color: rgb(252, 15, 15);
 }
-.form__closing-button {
+.edit-form__closing-button {
     position: absolute;
     top: 7px;
     right: 7px;
@@ -54,7 +61,7 @@
     height: 27px;
     cursor: pointer;
 }
-.form__closing-button::before {
+.edit-form__closing-button::before {
     content: '';
     position: absolute;
     top: 13px;
@@ -65,7 +72,7 @@
     transform: rotate(-45deg);
     border-radius: 10px;
 }
-.form__closing-button::after {
+.edit-form__closing-button::after {
     content: '';
     position: absolute;
     top: 13px;
@@ -76,14 +83,7 @@
     transform: rotate(45deg);
     border-radius: 10px;
 }
-.hidden {
-    transform: scale(0);
-    transition: all 0s ease 0.3s;
-}
-.hidden-form {
-    transform: scale(0);
-}
-.form label {
+.edit-task__form label {
     display: block;
     font-family: Poppins;
     margin-bottom: 5px;
@@ -91,7 +91,7 @@
     font-weight: 700;
     letter-spacing: 1.2px;
 }
-form input {
+.edit-task__form input {
     height: 50px;
     width: 100%;
     border-radius: 5px;
@@ -99,7 +99,10 @@ form input {
     font-size: 20px;
     border: 2px solid rgb(110, 110, 110);
 }
-.form textarea {
+.edit-task__form input:focus {
+    box-shadow: 0 0 5px rgb(110, 110, 110);
+}
+.edit-task__form textarea {
     resize: none;
     width: 100%;
     height: 170px;
@@ -108,51 +111,48 @@ form input {
     font-size: 20px;
     border: 2px solid rgb(110, 110, 110);
 }
-.form input:focus {
-    box-shadow: 0 0 5px rgb(110, 110, 110);
-}
-.form__title {
+.edit-form__title {
     position: relative;
 }
-.form__due-date {
+.edit-form__due-date {
     display: flex;
     align-items: center;
     column-gap: 20px;
     position: relative;
 }
-.form__due-date > label {
+.edit-form__due-date > label {
     color: #fff;
     cursor: pointer;
 }
-.form__due-date input {
+.edit-form__due-date input {
     width: 200px;
     height: 40px;
     cursor: pointer;
 }
-.form__priority {
+.edit-form__priority {
     margin-top: auto;
     display: flex;
     align-items: flex-end;
     column-gap: 45px;
 }
-.form__priority > label {
+.edit-form__priority > label {
     color: #fff;
 }
-.priority__buttons {
+.edit-form-priority__buttons {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     column-gap: 15px;
     position: relative;
 }
-.priority__buttons input[type=radio] {
+.edit-form-priority__buttons input[type=radio] {
     width: 1px;
     height: 1px;
     opacity: 0;
     padding: 0;
     position: absolute;
 }
-.priority__buttons > label {
+.edit-form-priority__buttons > label {
     display: block;
     height: 35px;
     margin-bottom: 0;
@@ -166,48 +166,48 @@ form input {
     justify-content: center;
     cursor: pointer;
 }
-.priority__low {
+.edit-form-priority__low {
     color: rgb(51, 238, 44);
     border: 2px solid rgb(51, 238, 44);
 }
-.priority__low:hover {
+.edit-form-priority__low:hover {
     background-color: rgb(51, 238, 44);
     color: rgb(121, 118, 118);
 }
-#low:checked + label {
+#edit-low:checked + label {
     background-color: rgb(51, 238, 44);
     color: rgb(121, 118, 118);
 }
-.priority__medium {
+.edit-form-priority__medium {
     color: rgb(233, 213, 32);
     border: 2px solid rgb(233, 213, 32);
 }
-.priority__medium:hover {
+.edit-form-priority__medium:hover {
     background-color: rgb(233, 213, 32);
     color: rgb(121, 118, 118);
 }
-#medium:checked + label {
+#edit-medium:checked + label {
     background-color: rgb(233, 213, 32);
     color: rgb(121, 118, 118);
 }
-.priority__high {
+.edit-form-priority__high {
     color: rgb(240, 120, 23);
     border: 2px solid rgb(240, 120, 23);
 }
-.priority__high:hover {
+.edit-form-priority__high:hover {
     background-color: rgb(240, 120, 23);
     color: rgb(121, 118, 118);
 }
-#high:checked + label {
+#edit-high:checked + label {
     background-color: rgb(240, 120, 23);
     color: rgb(121, 118, 118);
 }
-.form__submit {
+.edit-form__submit {
     position: absolute;
     right: 30px;
     bottom: 20px;
 }
-.form__submit button {
+.edit-form__submit button {
     height: 35px;
     min-width: 100px;
     font-size: 20px;
@@ -222,16 +222,17 @@ form input {
     background-color: rgb(32, 197, 238);
     box-shadow: 0px 2px rgb(161, 161, 161);
 }
-.form__submit button:hover {
+.edit-form__submit button:hover {
     box-shadow: 0 0 5px rgb(32, 197, 238);
 }
-.form__submit button:active {
+.edit-form__submit button:active {
     position: relative;
     top: 1px;
 }
 
+
 /* Validation styles */
-.invalid {
+.edit-task .invalid {
     border: 2px dashed rgb(247, 90, 90);
 }
 .error-paragraph {

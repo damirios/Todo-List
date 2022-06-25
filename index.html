@@ -36,7 +36,7 @@
         </div>
         <div class="content">
             <div class="content__menu">
-                <div class="content__title">Today</div>
+                <div class="content__title">All tasks</div>
                 <div class="content__buttons">
                     <button class="add-task">Add a task</button>
                 </div>
@@ -50,7 +50,8 @@
             </div>
         </footer>
         <div class="new-task hidden">
-            <form action="#" class="new-task__form form">
+            <form action="#" class="new-task__form hidden-form form">
+                <div class="form__name">Add a task:</div>
                 <div class="form__closing-button"></div>
                 <div class="form__title">
                     <!-- <label for="title">Title: </label> -->
@@ -58,11 +59,11 @@
                 </div>
                 <div class="form__description">
                     <!-- <label for="description">Description: </label> -->
-                    <textarea name="description" id="description" placeholder="Description: Make a video about Prey (2017)." required></textarea>
+                    <textarea name="description" id="description" placeholder="Description: Make a video about Prey (2017)."></textarea>
                 </div>
                 <div class="form__due-date">
                     <label for="dueDate">Due Date: </label>
-                    <input type="date" name="dueDate" id="dueDate" required>
+                    <input type="date" name="dueDate" id="dueDate">
                 </div>
                 <div class="form__priority priority">
                     <label>Priority: </label>
@@ -80,6 +81,40 @@
                 </div>
             </form>
         </div>
+
+        <div class="edit-task hidden">
+            <form action="#" class="edit-task__form  hidden-form">
+                <div class="edit-form__name">Edit the task:</div>
+                <div class="edit-form__closing-button"></div>
+                <div class="edit-form__title">
+                    <!-- <label for="title">Title: </label> -->
+                    <input type="text" name="title" id="edit-title" required>
+                </div>
+                <div class="edit-form__description">
+                    <!-- <label for="description">Description: </label> -->
+                    <textarea name="description" id="edit-description"></textarea>
+                </div>
+                <div class="edit-form__due-date">
+                    <label for="edit-dueDate">Due Date: </label>
+                    <input type="date" name="dueDate" id="edit-dueDate">
+                </div>
+                <div class="edit-form__priority">
+                    <label>Priority: </label>
+                    <div class="edit-form-priority__buttons">
+                        <input name="priority" type="radio" id="edit-low" required>
+                        <label for="edit-low" class="edit-form-priority__low">Low</label>
+                        <input name="priority" type="radio" id="edit-medium" required>
+                        <label for="edit-medium" class="edit-form-priority__medium">Medium</label>
+                        <input name="priority" type="radio" id="edit-high" required>
+                        <label for="edit-high" class="edit-form-priority__high">High</label>
+                    </div>
+                </div>
+                <div class="edit-form__submit">
+                    <button type="submit">Edit Todo</button>
+                </div>
+            </form>
+        </div>
+
     </div>
     <script src="main.js"></script>
 </body>
