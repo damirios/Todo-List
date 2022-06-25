@@ -3,6 +3,7 @@
 
 @import url('resetStyle.css');
 @import url('newTaskForm.css');
+@import url('editForm.css');
 
 /* :root {
     font-family: "Poppins";
@@ -89,7 +90,7 @@ input:focus {
 }
 .content__title {
     height: 100%;
-    flex: 0 1 250px;
+    flex: 0 1 350px;
     font-size: 40px;
     font-weight: 700;
     color: rgb(0, 0, 0);
@@ -159,7 +160,7 @@ input:focus {
     content: '';
     position: absolute;
     width: 95%;
-    height: 2px;
+    height: 1px;
     top: 50%;
     left: 0;
     background-color: rgb(255, 0, 0);

@@ -1,3 +1,4 @@
+import { todoFunctions } from "./controller";
 
 const changeTodoStatus = function(todoData) {
     if (this.checked) {
@@ -23,12 +24,13 @@ const hideNewTaskWindow = function() {
     newTaskWindow.classList.add('hidden');
 }
 
-const createTodoBlockInDOM = function(todoData, todoExpiredStatus) {
+const createTodoBlockInDOM = function(todoData, todoExpiredStatus, todos) {
     const tasksContainer = document.querySelector('.content__tasks');
 
     const todoBlock = document.createElement('div');
     todoBlock.classList.add('single-todo');
     todoBlock.classList.add(todoData.priority);
+
     if (todoExpiredStatus) {
         todoBlock.classList.add('expired');
         todoData.expired = true;
@@ -52,19 +54,23 @@ const createTodoBlockInDOM = function(todoData, todoExpiredStatus) {
 
     const details = document.createElement('button');
     details.textContent = 'details';
+    details.classList.add('details-todo');
     buttons.appendChild(details);
 
     const edit = document.createElement('button');
     const editImage = document.createElement('img');
     editImage.src = './images/icons/edit.svg';
     edit.appendChild(editImage);
+    edit.classList.add('edit-todo');
     buttons.appendChild(edit);
 
     const deleteTodo = document.createElement('button');
     const deleteTodoImage = document.createElement('img');
     deleteTodoImage.src = './images/icons/delete.svg';
     deleteTodo.appendChild(deleteTodoImage);
+    deleteTodo.classList.add('delete-todo');
     buttons.appendChild(deleteTodo);
+    buttons.addEventListener('click', todoFunctions.bind(buttons, todos, todoData));
 
     todoBlock.appendChild(buttons);
 
@@ -79,6 +85,7 @@ const createTodoBlockInDOM = function(todoData, todoExpiredStatus) {
     }
     checkbox.addEventListener('change', changeTodoStatus.bind(checkbox, todoData));
 
+    todoBlock.dataset.title = todoData.title;
     tasksContainer.appendChild(todoBlock); // adding new todoBlock into tasks container
 }
 
@@ -120,4 +127,44 @@ const resetErrors = function(form) {
     }
 }
 
-export {showNewTaskWindow, hideNewTaskWindow, createTodoBlockInDOM, clearTodoContainer, createErrorParagraph, deleteErrorParagraph, resetErrors};
+const showTodoGroupTitle = function(clickedObject) {
+    const currentTitle = clickedObject.textContent;
+    const titleDOMElement = document.querySelector('.content__title');
+    titleDOMElement.textContent = currentTitle;
+}
+
+const openEditForm = function() {
+    const editTaskWindow = document.querySelector('.edit-task');
+    const editTaskWindowForm = editTaskWindow.querySelector('.edit-task__form');
+    editTaskWindow.classList.remove('hidden');
+    editTaskWindowForm.classList.remove('hidden-form');
+
+    return editTaskWindowForm;
+}
+
+const fillEditForm = function(todo, form) {
+    // console.log(todo);
+    // console.log(form);
+    form.title.value = todo.title;
+    form.description.value = todo.description;
+    form.dueDate.value = todo.dueDate;
+
+    if (todo.priority == 'low') {
+        form.querySelector('#edit-low').checked = true;
+    } else if (todo.priority == 'medium') {
+        form.querySelector('#edit-medium').checked = true;
+    } else if (todo.priority == 'high') {
+        form.querySelector('#edit-high').checked = true;
+    }
+
+}
+
+const closeEditForm = function(todo) {
+    const editTaskWindow = document.querySelector('.edit-task');
+    const editTaskWindowForm = editTaskWindow.querySelector('form');
+    editTaskWindowForm.classList.add('hidden-form');
+    editTaskWindow.classList.add('hidden');
+}
+
+export {showNewTaskWindow, hideNewTaskWindow, createTodoBlockInDOM, clearTodoContainer, createErrorParagraph, deleteErrorParagraph, resetErrors,
+showTodoGroupTitle, openEditForm, closeEditForm, fillEditForm};

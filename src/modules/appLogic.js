@@ -1,4 +1,6 @@
-import {createErrorParagraph, deleteErrorParagraph} from './domManipulations'
+import {createErrorParagraph, deleteErrorParagraph} from './domManipulations';
+
+// let currentTodos;
 
 const todoFactory = function(form) {
     let todoObject = {}; // object that collects info from new task form!
@@ -8,7 +10,17 @@ const todoFactory = function(form) {
         if (element.name == 'title' || element.name == 'description') {
             todoObject[element.name] = element.value;
         } else if (element.name == 'priority' && element.checked) {
-            todoObject[element.name] = element.id;
+
+            if (element.id == 'edit-low') { //these checks for edit-... needs to show priority - editForm priority buttons id's differ newTaskForm's (obviously)
+                todoObject[element.name] = 'low';
+            } else if (element.id == 'edit-medium') {
+                todoObject[element.name] = 'medium';
+            } else if (element.id == 'edit-high') {
+                todoObject[element.name] = 'high';
+            } else {
+                todoObject[element.name] = element.id;
+            }
+
         } else if (element.name == 'dueDate') {
             todoObject[element.name] = element.value;
         }
@@ -18,11 +30,14 @@ const todoFactory = function(form) {
 }
 
 const isFormValid = function(form) {
-    const titleInput = form.querySelector('input#title');
-    const dueDateInput = form.querySelector('input#dueDate');
-    const priorityInputs = form.querySelectorAll('input[name=priority]');
-    const priorityButtons = form.querySelector('.priority__buttons');
-    
+    const titleInput = form.title;
+    const dueDateInput = form.dueDate;
+    const priorityInputs = form.priority; 
+    // const titleInput = form.querySelector('input#title');
+    // const dueDateInput = form.querySelector('input#dueDate');
+    // const priorityInputs = form.querySelectorAll('input[name=priority]');
+    const priorityButtons = form.querySelector('.priority__buttons, .edit-form-priority__buttons');
+
     let validPriority;
     let priorityCheck = false;
     for (let i = 0; i < priorityInputs.length; i++) {
@@ -212,4 +227,22 @@ const addExpirationStatus = function(todos) {
     }
 }
 
-export {todoFactory, isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, isTodoExpired, addExpirationStatus}
+const deleteTodo = function(currentTodo, todos) {
+    for (let i = 0; i < todos.length; i++) {
+        if ( todos[i] == currentTodo ) {
+            todos.splice(i, 1);
+        }
+    }
+}
+
+const getChangedTodos = function(todo, todos, editForm) {
+    const newTodo = todoFactory(editForm);
+    const todoIndexToReplace = todos.indexOf(todo);
+
+    if (todoIndexToReplace != -1) {
+        todos[todoIndexToReplace] = newTodo;
+    }
+    return todos;
+}
+
+export {todoFactory, isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, isTodoExpired, addExpirationStatus, deleteTodo, getChangedTodos}
