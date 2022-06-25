@@ -8,7 +8,7 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
     // creating example todos ===================================================
     const firstTodo = {
         title: 'Call to Irina',
-        description: 'I have to call to Irina and know she is.',
+        description: 'I have to call to Irina and know where she is.',
         dueDate: '2022-06-17',
         priority: 'high',
         check: false,
@@ -58,6 +58,7 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
         const editFormContainer = document.querySelector('.edit-task');
         const editForm = editFormContainer.querySelector('form');
         const editFormCloseButton = document.querySelector('.edit-form__closing-button');
+        const detailsWindow = document.querySelector('.task-details');
 
         if (!newTaskWindow.classList.contains('hidden')) { //if the new task form is open
             if ( clickedObject == closeTaskWindowButton || !clickedObject.closest('.form') ) { //check if clicked Object is the "close form" button or is not form window
@@ -85,6 +86,16 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
             !clickedObject.closest('.edit-task__form') ) || clickedObject == editFormCloseButton) { // if edit form is open. Then close button clicked
                 closeEditForm();
                 editForm.reset();
+            } else if ( detailsWindow.classList.contains('active') && !clickedObject.closest('.task-details') ) {
+                const detailsPriority = detailsWindow.querySelector('.task-details__priority');
+                if ( detailsPriority.classList.contains('details-priority__low') ) {
+                    detailsPriority.classList.remove('details-priority__low');
+                } else if ( detailsPriority.classList.contains('details-priority__medium') ) {
+                    detailsPriority.classList.remove('details-priority__medium');
+                } else if ( detailsPriority.classList.contains('details-priority__high') ) {
+                    detailsPriority.classList.remove('details-priority__high');
+                }
+                detailsWindow.classList.remove('active');
             }
         }
     }

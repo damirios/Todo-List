@@ -244,5 +244,5 @@ const getChangedTodos = function(todo, todos, editForm) {
     return todos;
 }
 
-
-export {todoFactory, isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, isTodoExpired, addExpirationStatus, deleteTodo, getChangedTodos}
+export {todoFactory, isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, isTodoExpired, addExpirationStatus, deleteTodo, 
+    getChangedTodos}

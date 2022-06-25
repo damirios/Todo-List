@@ -1,5 +1,5 @@
-import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm} from './domManipulations';
-import {todoFactory, isTodoExpired, addExpirationStatus, deleteTodo, isFormValid, getChangedTodos} from './appLogic';
+import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm, openDetailsWindow} from './domManipulations';
+import {todoFactory, isTodoExpired, addExpirationStatus, deleteTodo, isFormValid, getChangedTodos, showTodoDetails} from './appLogic';
 
 const addToTheTodoList = function(form, todos) {
     const newTodo = todoFactory(form);
@@ -128,6 +128,8 @@ const todoFunctions = function(todos, currentTodo, e) {
             }
 
             let button = new editButtonClass(currentTodo, todos, editForm);
+        } else if ( clickedButton.classList.contains('details-todo') ) {
+            openDetailsWindow(currentTodo);
         }
         // return todos to index.js
     }

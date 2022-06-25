@@ -167,5 +167,27 @@ const closeEditForm = function(todo) {
     editTaskWindow.classList.add('hidden');
 }
 
+const openDetailsWindow = function(todo) {
+    const detailsWindow = document.querySelector('.task-details');
+    detailsWindow.classList.add('active');
+
+    const title = detailsWindow.querySelector('.task-details__title');
+    title.textContent = 'Title: ' + todo.title;
+    
+    const description = detailsWindow.querySelector('.task-details__description');
+    description.textContent = 'Description: ' + todo.description;
+
+    const dueDate = detailsWindow.querySelector('.task-details__dueDate');
+    dueDate.textContent = 'Due date: ' + todo.dueDate;
+
+    const priority = detailsWindow.querySelector('.task-details__priority');
+    priority.textContent = 'Priority: ' + todo.priority;
+    priority.classList.add('details-priority__' + todo.priority);
+}
+
+const closeDetailsWindow = function() {
+
+}
+
 export {showNewTaskWindow, hideNewTaskWindow, createTodoBlockInDOM, clearTodoContainer, createErrorParagraph, deleteErrorParagraph, resetErrors,
-showTodoGroupTitle, openEditForm, closeEditForm, fillEditForm};
+showTodoGroupTitle, openEditForm, closeEditForm, fillEditForm, openDetailsWindow, closeDetailsWindow};

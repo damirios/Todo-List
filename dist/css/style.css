@@ -4,6 +4,7 @@
 @import url('resetStyle.css');
 @import url('newTaskForm.css');
 @import url('editForm.css');
+@import url('taskDetails.css');
 
 /* :root {
     font-family: "Poppins";
@@ -32,7 +33,7 @@ input:focus {
     min-height: 100%;
     width: 100%;
 	display: grid;
-    grid-template-columns: 350px auto;
+    grid-template-columns: 250px auto;
     grid-template-rows: 80px auto 60px;
 }
 .header {
@@ -220,7 +221,7 @@ input:focus {
     display: flex;
     flex-direction: column;
     row-gap: 30px;
-    padding: 15px 20px;
+    padding: 15px;
     color: #000;
 }
 .sidebar__title {
@@ -239,15 +240,15 @@ input:focus {
     background-color: #fff;
 }
 .sidebar ul {
-    padding: 10px 0 10px 20px;
+    padding: 10px 0 10px 5px;
     -webkit-text-stroke: 1px rgb(53, 53, 53);
 }
 .sidebar li {
-    font-size: 34px;
+    font-size: 26px;
     font-weight: 500;
     margin-bottom: 4px;
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 5px 0px;
     border-radius: 10px;
 }
 .sidebar li:hover {
@@ -264,24 +265,25 @@ input:focus {
 }
 .projects__create span {
     position: relative;
-    left: 35px;
+    left: 25px;
 }
 .projects__create::before {
     content: '';
     position: absolute;
-    top: 17px;
-    height: 5px;
-    width: 30px;
+    top: 16px;
+    left: 2px;
+    height: 3px;
+    width: 20px;
     border-radius: 10px;
     background-color: rgb(0, 0, 0);
 }
 .projects__create::after {
     content: '';
     position: absolute;
-    top: 18px;
-    left: 10px;
-    height: 5px;
-    width: 30px;
+    top: 16px;
+    left: 2px;
+    height: 3px;
+    width: 20px;
     transform: rotate(90deg);
     border-radius: 10px;
     background-color: rgb(0, 0, 0);
