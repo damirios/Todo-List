@@ -235,6 +235,9 @@ const deleteTodo = function(currentTodo, todos) {
 }
 
 const getChangedTodos = function(todo, todos, editForm) {
+    console.log(todo);
+    console.log(todos);
+    console.log(editForm);
     const newTodo = todoFactory(editForm, todo.check);
     const todoIndexToReplace = todos.indexOf(todo);
 

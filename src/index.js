@@ -74,7 +74,7 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
                     const tasksGroup = document.querySelector('.tasks ul'); // "all tasks" button after
                     highlightChosenTaskGroup(tasksGroup, allTasks); // creating a new task
                     
-                    showAllTodos(todos);
+                    showAllTodos(todos, todos);
                     hideNewTaskWindow();
                     form.reset();
                 }
@@ -111,6 +111,8 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
             highlightChosenTaskGroup(taskGroups, clickedObject);
             const todosForShow = sortTasksAccordingToChosenTaskGroup(clickedObject, todos);
             showAllTodos(todosForShow, todos, clickedObject);
+            console.log(todos);
+            console.log(todosForShow);
         }
     }
 

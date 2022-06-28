@@ -172,7 +172,7 @@ const openDetailsWindow = function(todo) {
     detailsWindow.classList.add('active');
 
     const title = detailsWindow.querySelector('.task-details__title');
-    title.textContent = 'Title: ' + todo.title;
+    title.textContent = todo.title;
     
     const description = detailsWindow.querySelector('.task-details__description');
     description.textContent = 'Description: ' + todo.description;
