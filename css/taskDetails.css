@@ -31,10 +31,10 @@
     margin-bottom: 7px;
 }
 .task-details__description {
-    margin-bottom: 7px;
+    margin-bottom: 10px;
 }
 .task-details__dueDate {
-    margin-bottom: 7px;
+    margin-bottom: 15px;
 }
 .details-priority__high {
     color: rgb(201, 43, 43);
