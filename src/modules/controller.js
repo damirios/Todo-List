@@ -1,5 +1,5 @@
-import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm, openDetailsWindow} from './domManipulations';
-import {todoFactory, isTodoExpired, addExpirationStatus, deleteTodo, isFormValid, getChangedTodos, showTodoDetails} from './appLogic';
+import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm, openDetailsWindow, addProjectDOM, clearProjectsMenu} from './domManipulations';
+import {todoFactory, isTodoExpired, addExpirationStatus, deleteTodo, isFormValid, getChangedTodos, highlightProject} from './appLogic';
 
 const addToTheTodoList = function(form, todos) {
     const newTodo = todoFactory(form);
@@ -135,4 +135,19 @@ const todoFunctions = function(todos, currentTodo, e) {
     }
 }
 
-export {addToTheTodoList, showAllTodos, todoFunctions};
+const addToProjectsList = function(project, projectsList) {
+    projectsList.push(project);
+}
+
+const showAllProjects = function(projectsList) {
+
+    if (projectsList.length > 0) {
+        clearProjectsMenu();
+        for (let i = 0; i < projectsList.length; i++) {
+            const project = projectsList[i];
+            addProjectDOM(project);
+        }
+    }
+}
+
+export {addToTheTodoList, showAllTodos, todoFunctions, addToProjectsList, showAllProjects};

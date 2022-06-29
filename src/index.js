@@ -1,9 +1,10 @@
-import {showNewTaskWindow, hideNewTaskWindow, resetErrors, closeEditForm} from './modules/domManipulations';
-import {addToTheTodoList, showAllTodos} from './modules/controller';
-import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup} from './modules/appLogic';
+import {showNewTaskWindow, hideNewTaskWindow, resetErrors, closeEditForm, createErrorParagraph, deleteErrorParagraph} from './modules/domManipulations';
+import {addToTheTodoList, showAllTodos, addToProjectsList, showAllProjects} from './modules/controller';
+import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, getCurrentProject, getChosenProject, highlightProject} from './modules/appLogic';
 
 (function() {
     let todos = [];
+    let projectsList = [];
     
     // creating example todos ===================================================
     const firstTodo = {
@@ -44,9 +45,21 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
     todos.push(fourthTodo);
     // ==========================================================================
 
-    showAllTodos(todos, todos);
+    const mainProject = {
+        title: 'Main',
+        todos: todos,
+    };
 
-    // Add Event Listeners for the new task form ===========================================
+    addToProjectsList(mainProject, projectsList);
+    showAllProjects(projectsList);
+    highlightProject(mainProject);
+
+    const todosForShow = mainProject.todos;
+    showAllTodos(todosForShow, todos);
+
+    
+
+    // Add Event Listeners for the new task form and closing conditions ===========================================
     const taskFunctions = function(e) {
         const addTaskWindowButton = document.querySelector('.add-task'); // button that opens new task form
         const newTaskWindow = document.querySelector('.new-task'); // form's outer div block
@@ -59,6 +72,12 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
         const editForm = editFormContainer.querySelector('form');
         const editFormCloseButton = document.querySelector('.edit-form__closing-button');
         const detailsWindow = document.querySelector('.task-details');
+        const newProject = document.querySelector('.new-project');
+        const newProjectForm = newProject.querySelector('form');
+        const newProjectClosingButton = newProject.querySelector('.new-project__closing-button');
+        
+        const currentProject = getCurrentProject(projectsList); 
+        todos = currentProject.todos;
 
         if (!newTaskWindow.classList.contains('hidden')) { //if the new task form is open
             if ( clickedObject == closeTaskWindowButton || !clickedObject.closest('.form') ) { //check if clicked Object is the "close form" button or is not form window
@@ -96,6 +115,10 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
                     detailsPriority.classList.remove('details-priority__high');
                 }
                 detailsWindow.classList.remove('active');
+            } else if (clickedObject.closest('.new-project') && !clickedObject.closest('.new-project form') || clickedObject == newProjectClosingButton) {
+                newProject.classList.add('hidden');
+                newProjectForm.classList.add('hidden-form');
+                newProjectForm.reset();
             }
         }
     }
@@ -111,11 +134,74 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
             highlightChosenTaskGroup(taskGroups, clickedObject);
             const todosForShow = sortTasksAccordingToChosenTaskGroup(clickedObject, todos);
             showAllTodos(todosForShow, todos, clickedObject);
-            console.log(todos);
-            console.log(todosForShow);
         }
     }
-
     taskGroups.addEventListener('click', taskGroupsFunctions);
+
+    // Add Event Listeners for projects
+    const projects = document.querySelector('.projects');
+    const createProjectButton = document.querySelector('.new-project__accept-title');
+
+    const projectsFunctions = function(e) {
+        const clickedObject = e.target;
+        const addProjectButton = projects.querySelector('.projects__create');
+        const newProject = document.querySelector('.new-project');
+        const newProjectForm = newProject.querySelector('form');
+        const allProjects = document.querySelectorAll('.projects ul li');
+        
+        if (addProjectButton && addProjectButton == clickedObject.closest('.projects__create')) {
+            newProject.classList.remove('hidden');
+            newProjectForm.classList.remove('hidden-form');
+        } else if ( clickedObject.classList.contains('single-project') ) {
+            if (projectsList.length > 0) {
+                for (let i = 0; i < projectsList.length; i++) {
+                    const currentProject = projectsList[i];
+                    if (currentProject.title == clickedObject.textContent) {
+                        highlightProject(currentProject);
+                        todos = currentProject.todos;
+                        showAllTodos(todos, todos);
+                    }
+                }
+            }
+        }
+    }
+    projects.addEventListener('click', projectsFunctions);
+
+
+    const addProject = function(e) {
+        e.preventDefault();
+        const projectTitle = document.querySelector('#project-title');
+        const newProject = document.querySelector('.new-project');
+        const newProjectForm = newProject.querySelector('form');
+        const currentHighlightedProjectInDOM = document.querySelector('.chosen-project');
+        const chosenProject = getChosenProject(currentHighlightedProjectInDOM, projectsList);
+        
+
+        if ( projectTitle.previousElementSibling.classList.contains('error-paragraph-project') ) {
+            deleteErrorParagraph(projectTitle);
+            projectTitle.classList.remove('invalid');
+        }
+
+        if (projectTitle.value.trim() == '') {
+            createErrorParagraph(projectTitle);
+            projectTitle.classList.add('invalid');
+
+        } else {
+            const currentProject = {
+                title: projectTitle.value,
+                todos: [],
+            }
+
+            addToProjectsList(currentProject, projectsList);
+            showAllProjects(projectsList);
+            highlightProject(chosenProject);
+            
+            newProject.classList.add('hidden');
+            newProjectForm.classList.add('hidden-form');
+            newProjectForm.reset();
+        }
+        
+    }
+    createProjectButton.addEventListener('click', addProject);
 
 })();

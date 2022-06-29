@@ -97,19 +97,31 @@ const clearTodoContainer = function() {
     });
 }
 
-const createErrorParagraph = function(inputField) {
+const createErrorParagraph = function(inputField, projectOrNot) {
     const errorParagraph = document.createElement('div');
-    errorParagraph.classList.add('error-paragraph');
+
     if (inputField.name == 'dueDate') {
+        errorParagraph.classList.add('error-paragraph');
         errorParagraph.classList.add('error-paragraph__shifted');
     }
+
     if (inputField.name == 'priority') {
+        errorParagraph.classList.add('error-paragraph');
         errorParagraph.textContent = 'Choose priority of the task';
     } else if (inputField.name == 'dueDate') {
+        errorParagraph.classList.add('error-paragraph');
         errorParagraph.textContent = 'Choose due date of the task';
     } else {
+        errorParagraph.classList.add('error-paragraph');
         errorParagraph.textContent = 'This field must be filled';
     }
+
+    if (inputField.name == 'projectTitle') {
+        errorParagraph.classList.remove('error-paragraph');
+        errorParagraph.classList.add('error-paragraph-project');
+        errorParagraph.textContent = "Write project's name!";
+    }
+ 
     inputField.before(errorParagraph);
 }
 
@@ -185,9 +197,25 @@ const openDetailsWindow = function(todo) {
     priority.classList.add('details-priority__' + todo.priority);
 }
 
-const closeDetailsWindow = function() {
+const addProjectDOM = function(project) {
+    const projects = document.querySelector('.projects ul');
+    const currentProject = document.createElement('li');
+    currentProject.classList.add('single-project');
+    currentProject.textContent = project.title;
+    currentProject
+    projects.appendChild(currentProject); 
+}
 
+const clearProjectsMenu = function() {
+    const projectsList = document.querySelector('.projects ul');
+    const projects = projectsList.querySelectorAll('li');
+    if (projects.length > 1) {
+        for (let i = 1; i < projects.length; i++) {
+            const projectToRemove = projects[i]; 
+            projectsList.removeChild(projectToRemove);
+        }
+    }
 }
 
 export {showNewTaskWindow, hideNewTaskWindow, createTodoBlockInDOM, clearTodoContainer, createErrorParagraph, deleteErrorParagraph, resetErrors,
-showTodoGroupTitle, openEditForm, closeEditForm, fillEditForm, openDetailsWindow, closeDetailsWindow};
+showTodoGroupTitle, openEditForm, closeEditForm, fillEditForm, openDetailsWindow, addProjectDOM, clearProjectsMenu};

@@ -247,5 +247,40 @@ const getChangedTodos = function(todo, todos, editForm) {
     return todos;
 }
 
+const getCurrentProject = function(projectsList) {
+    const projects = document.querySelectorAll('.single-project');
+    for (let i = 0; i < projects.length; i++) {
+        if ( projects[i].classList.contains('chosen-project') ) {
+            return projectsList[i];
+        }
+    }
+    return null;
+}
+
+const getChosenProject = function(currentChosenProjectInDOM, projectsList) {
+    if (projectsList.length > 0) {
+        for (let i = 0; i < projectsList.length; i++) {
+            const currentProject = projectsList[i];
+            if (currentProject.title == currentChosenProjectInDOM.textContent) {
+                return currentProject;
+            } 
+        }
+    }
+}
+
+const highlightProject = function(project) {
+
+    const allProjects = document.querySelectorAll('.single-project');
+    if (allProjects.length > 0) {
+        for (let i = 0; i < allProjects.length; i++) {
+            const currentProject = allProjects[i];
+            currentProject.classList.remove('chosen-project');
+            if (currentProject.textContent == project.title) {
+                currentProject.classList.add('chosen-project');
+            }
+        }
+    }
+}
+
 export {todoFactory, isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, isTodoExpired, addExpirationStatus, deleteTodo, 
-    getChangedTodos}
+    getChangedTodos, getCurrentProject, getChosenProject, highlightProject}
