@@ -1,5 +1,6 @@
 import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm, openDetailsWindow, addProjectDOM, clearProjectsMenu} from './domManipulations';
 import {todoFactory, isTodoExpired, addExpirationStatus, deleteTodo, isFormValid, getChangedTodos, highlightProject} from './appLogic';
+import { saveInLocalStorage } from './localStorage';
 
 const addToTheTodoList = function(form, todos) {
     const newTodo = todoFactory(form);
@@ -72,7 +73,7 @@ const compareFunction = function(first, second) { // sort by priority of todo an
     }
 }
 
-const showAllTodos = function(todosForShow, allTodos, clickedObject) {
+const showAllTodos = function(todosForShow, allTodos, projectsList, clickedObject) {
     clearTodoContainer(); // clears todo container of all tasks and then we will create it again with chosen parameters
     if (clickedObject) {
         showTodoGroupTitle(clickedObject);
@@ -85,19 +86,19 @@ const showAllTodos = function(todosForShow, allTodos, clickedObject) {
         for (let i = 0; i < todosForShow.length; i++) {
             const todo = todosForShow[i];
             if (todo) {
-                createTodoBlockInDOM(todo, isTodoExpired(todo), allTodos);
+                createTodoBlockInDOM(todo, isTodoExpired(todo), projectsList, allTodos);
             }
         }
     }
 }
 
-const todoFunctions = function(todos, currentTodo, e) {
+const todoFunctions = function(todos, currentTodo, projectsList, e) {
     const clickedButton = e.target.closest('button'); // get clicked Button or null
     if (clickedButton) {
         if ( clickedButton.classList.contains('delete-todo') ) {
             deleteTodo(currentTodo, todos);
-            showAllTodos(todos, todos);
-            console.log(todos);
+            saveInLocalStorage(projectsList);
+            showAllTodos(todos, todos, projectsList);
         } else if ( clickedButton.classList.contains('edit-todo') ) {
             const editForm = openEditForm(); // opens edit form and returns it
             fillEditForm(currentTodo, editForm);
@@ -117,7 +118,8 @@ const todoFunctions = function(todos, currentTodo, e) {
                         todos = getChangedTodos(todo, todos, editForm);
                         this.removeListener();
                         closeEditForm();
-                        showAllTodos(todos, todos);
+                        saveInLocalStorage(projectsList);
+                        showAllTodos(todos, todos, projectsList);
                     }
                 }
 

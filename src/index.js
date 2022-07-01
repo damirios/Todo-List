@@ -1,6 +1,7 @@
 import {showNewTaskWindow, hideNewTaskWindow, resetErrors, closeEditForm, createErrorParagraph, deleteErrorParagraph} from './modules/domManipulations';
 import {addToTheTodoList, showAllTodos, addToProjectsList, showAllProjects} from './modules/controller';
 import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, getCurrentProject, getChosenProject, highlightProject} from './modules/appLogic';
+import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
 
 (function() {
     let todos = [];
@@ -10,7 +11,7 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
     const firstTodo = {
         title: 'Call to Irina',
         description: 'I have to call to Irina and know where she is.',
-        dueDate: '2022-06-17',
+        dueDate: '2022-07-17',
         priority: 'high',
         check: false,
     };
@@ -44,20 +45,29 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
     todos.push(thirdTodo);
     todos.push(fourthTodo);
     // ==========================================================================
-
-    const mainProject = {
-        title: 'Main',
-        todos: todos,
-    };
-
-    addToProjectsList(mainProject, projectsList);
-    showAllProjects(projectsList);
-    highlightProject(mainProject);
-
-    const todosForShow = mainProject.todos;
-    showAllTodos(todosForShow, todos);
-
     
+    // localStorage.clear();
+    // console.log( JSON.parse(localStorage.getItem('undefined')) );
+
+    if ( !JSON.parse(localStorage.getItem('projectsList')) ) {
+        console.log('You are first time here. Or something went wrong with Local Storage. So we show standart projects. \
+        You should write me (damirios). Sorry(');
+        const mainProject = {
+            title: 'Main',
+            todos: todos,
+        };
+        addToProjectsList(mainProject, projectsList);
+        saveInLocalStorage(projectsList);
+    } else {    
+        projectsList = getFromLocalStorage();
+    }
+
+    showAllProjects(projectsList);
+    highlightProject(projectsList[0]);
+    todos = projectsList[0].todos;
+
+    const todosForShow = projectsList[0].todos;
+    showAllTodos(todosForShow, todos, projectsList);
 
     // Add Event Listeners for the new task form and closing conditions ===========================================
     const taskFunctions = function(e) {
@@ -88,12 +98,13 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
                 e.preventDefault();
                 if ( isFormValid(form) ) {
                     addToTheTodoList(form, todos); // creates and insert new todo in DOM
+                    saveInLocalStorage(projectsList); // save new Todo through projectsList in localStorage
 
                     const allTasks = document.querySelector('.all-tasks'); // these three lines need to highlight 
                     const tasksGroup = document.querySelector('.tasks ul'); // "all tasks" button after
                     highlightChosenTaskGroup(tasksGroup, allTasks); // creating a new task
                     
-                    showAllTodos(todos, todos);
+                    showAllTodos(todos, todos, projectsList);
                     hideNewTaskWindow();
                     form.reset();
                 }
@@ -133,7 +144,7 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
         if (clickedObject != taskGroups) {
             highlightChosenTaskGroup(taskGroups, clickedObject);
             const todosForShow = sortTasksAccordingToChosenTaskGroup(clickedObject, todos);
-            showAllTodos(todosForShow, todos, clickedObject);
+            showAllTodos(todosForShow, todos, projectsList, clickedObject);
         }
     }
     taskGroups.addEventListener('click', taskGroupsFunctions);
@@ -158,8 +169,13 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
                     const currentProject = projectsList[i];
                     if (currentProject.title == clickedObject.textContent) {
                         highlightProject(currentProject);
+
+                        const allTasks = document.querySelector('.all-tasks'); // these three lines need to highlight 
+                        const tasksGroup = document.querySelector('.tasks ul'); // "all tasks" button after
+                        highlightChosenTaskGroup(tasksGroup, allTasks); // creating a new task
+
                         todos = currentProject.todos;
-                        showAllTodos(todos, todos);
+                        showAllTodos(todos, todos, projectsList);
                     }
                 }
             }
@@ -193,6 +209,7 @@ import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGro
             }
 
             addToProjectsList(currentProject, projectsList);
+            saveInLocalStorage(projectsList);
             showAllProjects(projectsList);
             highlightProject(chosenProject);
             

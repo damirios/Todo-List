@@ -24,7 +24,7 @@ const hideNewTaskWindow = function() {
     newTaskWindow.classList.add('hidden');
 }
 
-const createTodoBlockInDOM = function(todoData, todoExpiredStatus, todos) {
+const createTodoBlockInDOM = function(todoData, todoExpiredStatus, projectsList, todos) {
     // console.log(todos);
     const tasksContainer = document.querySelector('.content__tasks');
 
@@ -71,7 +71,7 @@ const createTodoBlockInDOM = function(todoData, todoExpiredStatus, todos) {
     deleteTodo.appendChild(deleteTodoImage);
     deleteTodo.classList.add('delete-todo');
     buttons.appendChild(deleteTodo);
-    buttons.addEventListener('click', todoFunctions.bind(buttons, todos, todoData));
+    buttons.addEventListener('click', todoFunctions.bind(buttons, todos, todoData, projectsList));
 
     todoBlock.appendChild(buttons);
 
