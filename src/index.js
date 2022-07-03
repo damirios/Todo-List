@@ -1,6 +1,6 @@
 import {showNewTaskWindow, hideNewTaskWindow, resetErrors, closeEditForm, createErrorParagraph, deleteErrorParagraph} from './modules/domManipulations';
-import {addToTheTodoList, showAllTodos, addToProjectsList, showAllProjects} from './modules/controller';
-import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, getCurrentProject, getChosenProject, highlightProject} from './modules/appLogic';
+import {addToTheTodoList, showAllTodos, addToProjectsList, showAllProjects, renameProject, deleteProject} from './modules/controller';
+import {isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, getCurrentProject, getChosenProject, highlightProject, isTitleUsable} from './modules/appLogic';
 import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
 
 (function() {
@@ -55,6 +55,7 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
         const mainProject = {
             title: 'Main',
             todos: todos,
+            nonremovable: true,
         };
         addToProjectsList(mainProject, projectsList);
         saveInLocalStorage(projectsList);
@@ -85,8 +86,9 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
         const newProject = document.querySelector('.new-project');
         const newProjectForm = newProject.querySelector('form');
         const newProjectClosingButton = newProject.querySelector('.new-project__closing-button');
+        const activeEditProjectMenu = document.querySelector('.active-edit-menu');
         
-        const currentProject = getCurrentProject(projectsList); 
+        const currentProject = getCurrentProject(projectsList);
         todos = currentProject.todos;
 
         if (!newTaskWindow.classList.contains('hidden')) { //if the new task form is open
@@ -110,6 +112,11 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
                 }
             }
         } else { //if the new task form is closed
+
+            if ( activeEditProjectMenu && clickedObject.closest('.edit-project') != activeEditProjectMenu ) {
+                activeEditProjectMenu.classList.remove('active-edit-menu');
+            }
+
             if (clickedObject == addTaskWindowButton) { //check if clicked Object is "add task" button
                 showNewTaskWindow();
             } else if ( (clickedObject == editFormContainer && !editFormContainer.classList.contains('hidden') && 
@@ -167,7 +174,7 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
             if (projectsList.length > 0) {
                 for (let i = 0; i < projectsList.length; i++) {
                     const currentProject = projectsList[i];
-                    if (currentProject.title == clickedObject.textContent) {
+                    if (currentProject.title == clickedObject.dataset.title) {
                         highlightProject(currentProject);
 
                         const allTasks = document.querySelector('.all-tasks'); // these three lines need to highlight 
@@ -178,6 +185,30 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
                         showAllTodos(todos, todos, projectsList);
                     }
                 }
+            }
+        } else if ( clickedObject.classList.contains('edit-project-button') ) {
+            const clickedProject = clickedObject.closest('.single-project');
+            const projectEditMenu = clickedObject.querySelector('.edit-project');
+            projectEditMenu.classList.add('active-edit-menu');
+
+            if (projectsList.length > 0) {
+                for (let i = 0; i < projectsList.length; i++) {
+                    const currentProject = projectsList[i];
+                    if (currentProject.title == clickedProject.dataset.title) {
+                        highlightProject(currentProject);
+
+                        todos = currentProject.todos;
+                        showAllTodos(todos, todos, projectsList);
+                    }
+                }
+            }
+        } else if ( clickedObject.closest('.active-edit-menu') ) {
+            const clickedProject = clickedObject.closest('.single-project');
+
+            if ( clickedObject.classList.contains('delete-project') ) {
+                deleteProject(clickedProject, projectsList); // CREATE THIS FUNCTION!!!!
+            } else if ( clickedObject.classList.contains('rename-project') ) {
+                renameProject(clickedProject, projectsList); // CREATE THIS FUNCTION!!!!
             }
         }
     }
@@ -203,19 +234,26 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
             projectTitle.classList.add('invalid');
 
         } else {
-            const currentProject = {
-                title: projectTitle.value,
-                todos: [],
+            if ( isTitleUsable(projectTitle.value, projectsList) ) {
+                const currentProject = {
+                    title: projectTitle.value,
+                    todos: [],
+                    nonremovable: false,
+                }
+    
+                addToProjectsList(currentProject, projectsList);
+                saveInLocalStorage(projectsList);
+                showAllProjects(projectsList);
+                console.log(currentHighlightedProjectInDOM);
+                highlightProject(chosenProject);
+                
+                newProject.classList.add('hidden');
+                newProjectForm.classList.add('hidden-form');
+                newProjectForm.reset();
+            } else {
+                createErrorParagraph(projectTitle);
+                projectTitle.classList.add('invalid');
             }
-
-            addToProjectsList(currentProject, projectsList);
-            saveInLocalStorage(projectsList);
-            showAllProjects(projectsList);
-            highlightProject(chosenProject);
-            
-            newProject.classList.add('hidden');
-            newProjectForm.classList.add('hidden-form');
-            newProjectForm.reset();
         }
         
     }

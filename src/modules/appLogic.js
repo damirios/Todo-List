@@ -261,7 +261,7 @@ const getChosenProject = function(currentChosenProjectInDOM, projectsList) {
     if (projectsList.length > 0) {
         for (let i = 0; i < projectsList.length; i++) {
             const currentProject = projectsList[i];
-            if (currentProject.title == currentChosenProjectInDOM.textContent) {
+            if (currentProject.title == currentChosenProjectInDOM.dataset.title) {
                 return currentProject;
             } 
         }
@@ -269,18 +269,28 @@ const getChosenProject = function(currentChosenProjectInDOM, projectsList) {
 }
 
 const highlightProject = function(project) {
-
     const allProjects = document.querySelectorAll('.single-project');
     if (allProjects.length > 0) {
         for (let i = 0; i < allProjects.length; i++) {
             const currentProject = allProjects[i];
             currentProject.classList.remove('chosen-project');
-            if (currentProject.textContent == project.title) {
+            if (currentProject.dataset.title == project.title) {
                 currentProject.classList.add('chosen-project');
             }
         }
     }
 }
 
+const isTitleUsable = function(projectTitle, projectsList) {
+    for (let i = 0; i < projectsList.length; i++) {
+        const project = projectsList[i];
+        if (project.title == projectTitle) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 export {todoFactory, isFormValid, highlightChosenTaskGroup, sortTasksAccordingToChosenTaskGroup, isTodoExpired, addExpirationStatus, deleteTodo, 
-    getChangedTodos, getCurrentProject, getChosenProject, highlightProject}
+    getChangedTodos, getCurrentProject, getChosenProject, highlightProject, isTitleUsable}

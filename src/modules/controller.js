@@ -152,4 +152,27 @@ const showAllProjects = function(projectsList) {
     }
 }
 
-export {addToTheTodoList, showAllTodos, todoFunctions, addToProjectsList, showAllProjects};
+const renameProject = function(currentProject, projectsList) {
+    
+}
+
+const deleteProject = function(clickedProject, projectsList) {
+    if (projectsList.length > 0) {
+        for (let i = 0; i < projectsList.length; i++) {
+            const currentProject = projectsList[i];
+            if (currentProject.title == clickedProject.dataset.title) {
+                if (projectsList.length == 1) {
+                    console.log("you can't delete the last project");
+                } else {
+                    projectsList.splice(i, 1);
+                    saveInLocalStorage(projectsList);
+                    showAllProjects(projectsList);
+                    highlightProject(projectsList[0]);
+                    showAllTodos(projectsList[0].todos, projectsList[0].todos, projectsList);
+                }
+            }
+        }
+    }
+}
+
+export {addToTheTodoList, showAllTodos, todoFunctions, addToProjectsList, showAllProjects, renameProject, deleteProject};

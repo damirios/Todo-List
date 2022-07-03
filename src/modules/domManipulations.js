@@ -119,7 +119,11 @@ const createErrorParagraph = function(inputField, projectOrNot) {
     if (inputField.name == 'projectTitle') {
         errorParagraph.classList.remove('error-paragraph');
         errorParagraph.classList.add('error-paragraph-project');
-        errorParagraph.textContent = "Write project's name!";
+        if ( inputField.value.trim() == '' ) {
+            errorParagraph.textContent = "Write project's name!";
+        } else {
+            errorParagraph.textContent = "Project with this name already exist!";
+        }
     }
  
     inputField.before(errorParagraph);
@@ -202,7 +206,27 @@ const addProjectDOM = function(project) {
     const currentProject = document.createElement('li');
     currentProject.classList.add('single-project');
     currentProject.textContent = project.title;
-    currentProject
+    currentProject.dataset.title = project.title;
+    
+    if ( !project.nonremovable ) {
+        const editButton = document.createElement('div');
+        editButton.classList.add('edit-project-button');
+        const editMenu = document.createElement('div');
+        editMenu.classList.add('edit-project');
+    
+        const renameProject = document.createElement('p');
+        renameProject.classList.add('rename-project');
+        renameProject.textContent = 'Rename project';
+        const deleteProject = document.createElement('p');
+        deleteProject.classList.add('delete-project');
+        deleteProject.textContent = 'Delete project';
+    
+        editMenu.appendChild(renameProject);
+        editMenu.appendChild(deleteProject);
+        editButton.appendChild(editMenu);
+        currentProject.appendChild(editButton);
+    }
+
     projects.appendChild(currentProject); 
 }
 
