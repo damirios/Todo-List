@@ -122,6 +122,75 @@
 .chosen-project {
     color: aqua;
     text-shadow: 0 0 5px #fff;
+
+}
+
+.single-project {
+    position: relative;
+}
+/* Edit project */
+.edit-project-button {
+    position: absolute;
+    right: 0px;
+    top: 5px;
+    width: 20px;
+    height: 25px;
+}
+.edit-project-button::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: rgb(255, 255, 255);
+}
+.edit-project-button::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: rgb(255, 255, 255);
+}
+
+.edit-project {
+    position: absolute;
+    width: 140px;
+    height: 70px;
+    background-color: rgb(214, 214, 214);
+    top: -70px;
+    left: -140px;
+    z-index: 2;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease 0s;
+}
+.active-edit-menu {
+    opacity: 0.9;
+    visibility: visible;
+}
+.edit-project p {
+    /* background-color: rgb(190, 44, 44); */
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(2, 2, 2);
+    -webkit-text-stroke: 0;
+    flex: 0 1 50%;
+    display: flex;
+    align-items: center;
+    padding: 0 3px;
+}
+.edit-project p:hover {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
 }
 
 /* Validation styles */
