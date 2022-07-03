@@ -87,6 +87,8 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
         const newProjectForm = newProject.querySelector('form');
         const newProjectClosingButton = newProject.querySelector('.new-project__closing-button');
         const activeEditProjectMenu = document.querySelector('.active-edit-menu');
+        const renameProjectBlock = document.querySelector('.rename-project-block');
+        const renameProjectBlockForm = renameProjectBlock.querySelector('form');
         
         const currentProject = getCurrentProject(projectsList);
         todos = currentProject.todos;
@@ -137,6 +139,9 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
                 newProject.classList.add('hidden');
                 newProjectForm.classList.add('hidden-form');
                 newProjectForm.reset();
+            } else if ( clickedObject.closest('.rename-project-block__closing-button') || clickedObject.closest('.rename-project-block') && !clickedObject.closest('.rename-project-block__form')) {
+                renameProjectBlock.classList.add('hidden-rename');
+                renameProjectBlockForm.classList.add('hidden-form-rename');
             }
         }
     }
@@ -167,7 +172,7 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
         const newProjectForm = newProject.querySelector('form');
         const allProjects = document.querySelectorAll('.projects ul li');
         
-        if (addProjectButton && addProjectButton == clickedObject.closest('.projects__create')) {
+        if ( addProjectButton && addProjectButton == clickedObject.closest('.projects__create') ) {
             newProject.classList.remove('hidden');
             newProjectForm.classList.remove('hidden-form');
         } else if ( clickedObject.classList.contains('single-project') ) {
@@ -206,9 +211,10 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
             const clickedProject = clickedObject.closest('.single-project');
 
             if ( clickedObject.classList.contains('delete-project') ) {
-                deleteProject(clickedProject, projectsList); // CREATE THIS FUNCTION!!!!
+                deleteProject(clickedProject, projectsList);
             } else if ( clickedObject.classList.contains('rename-project') ) {
-                renameProject(clickedProject, projectsList); // CREATE THIS FUNCTION!!!!
+                renameProject(clickedProject, projectsList);
+                clickedObject.closest('.active-edit-menu').classList.remove('active-edit-menu');
             }
         }
     }

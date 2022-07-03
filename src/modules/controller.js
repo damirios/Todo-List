@@ -1,4 +1,4 @@
-import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm, openDetailsWindow, addProjectDOM, clearProjectsMenu} from './domManipulations';
+import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm, openDetailsWindow, addProjectDOM, clearProjectsMenu, createErrorParagraph} from './domManipulations';
 import {todoFactory, isTodoExpired, addExpirationStatus, deleteTodo, isFormValid, getChangedTodos, highlightProject} from './appLogic';
 import { saveInLocalStorage } from './localStorage';
 
@@ -152,8 +152,49 @@ const showAllProjects = function(projectsList) {
     }
 }
 
-const renameProject = function(currentProject, projectsList) {
-    
+const acceptProjectsNewName = function(previousTitle, clickedProject, projectsList, e) {
+    e.preventDefault();
+
+    const renameProjectBlock = document.querySelector('.rename-project-block');
+    const renameProjectBlockForm = renameProjectBlock.querySelector('form');
+
+    const renameInput = renameProjectBlock.querySelector('#rename-project-title-block');
+    const newTitle = renameInput.value;
+
+    if ( newTitle.trim() != '' ) {
+        if (projectsList.length > 0) {
+            for (let i = 0; i < projectsList.length; i++) {
+                const currentProject = projectsList[i];
+                if (currentProject.title == previousTitle) {
+                    currentProject.title = newTitle;
+                    saveInLocalStorage(projectsList);
+                    showAllProjects(projectsList);
+                    highlightProject(projectsList[i]);
+                    showAllTodos(projectsList[i].todos, projectsList[i].todos, projectsList);
+                    renameProjectBlock.classList.add('hidden-rename');
+                    renameProjectBlockForm.classList.add('hidden-form-rename');
+                }
+            }
+        }
+    } else {
+        createErrorParagraph(renameInput);
+        renameInput.classList.add('invalid');
+    }
+}
+
+const renameProject = function(clickedProject, projectsList) {
+
+    const renameProjectBlock = document.querySelector('.rename-project-block');
+    const renameProjectBlockForm = renameProjectBlock.querySelector('form');
+    renameProjectBlock.classList.remove('hidden-rename');
+    renameProjectBlockForm.classList.remove('hidden-form-rename');
+
+    const renameInput = renameProjectBlock.querySelector('#rename-project-title-block');
+    renameInput.value = clickedProject.dataset.title;
+    const previousTitle = clickedProject.dataset.title;
+
+    const renameProjectButton = renameProjectBlock.querySelector('button.rename-project-block__accept-title');
+    renameProjectButton.addEventListener('click', acceptProjectsNewName.bind(this, previousTitle, clickedProject, projectsList));
 }
 
 const deleteProject = function(clickedProject, projectsList) {
@@ -161,15 +202,11 @@ const deleteProject = function(clickedProject, projectsList) {
         for (let i = 0; i < projectsList.length; i++) {
             const currentProject = projectsList[i];
             if (currentProject.title == clickedProject.dataset.title) {
-                if (projectsList.length == 1) {
-                    console.log("you can't delete the last project");
-                } else {
-                    projectsList.splice(i, 1);
-                    saveInLocalStorage(projectsList);
-                    showAllProjects(projectsList);
-                    highlightProject(projectsList[0]);
-                    showAllTodos(projectsList[0].todos, projectsList[0].todos, projectsList);
-                }
+                projectsList.splice(i, 1);
+                saveInLocalStorage(projectsList);
+                showAllProjects(projectsList);
+                highlightProject(projectsList[0]);
+                showAllTodos(projectsList[0].todos, projectsList[0].todos, projectsList);
             }
         }
     }
