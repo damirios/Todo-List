@@ -1,4 +1,4 @@
-import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm, openDetailsWindow, addProjectDOM, clearProjectsMenu, createErrorParagraph} from './domManipulations';
+import {createTodoBlockInDOM, clearTodoContainer, showTodoGroupTitle, openEditForm, fillEditForm, closeEditForm, openDetailsWindow, addProjectDOM, clearProjectsMenu, createErrorParagraph, deleteErrorParagraph} from './domManipulations';
 import {todoFactory, isTodoExpired, addExpirationStatus, deleteTodo, isFormValid, getChangedTodos, highlightProject} from './appLogic';
 import { saveInLocalStorage } from './localStorage';
 
@@ -161,24 +161,45 @@ const acceptProjectsNewName = function(previousTitle, clickedProject, projectsLi
     const renameInput = renameProjectBlock.querySelector('#rename-project-title-block');
     const newTitle = renameInput.value;
 
+    let allowToRename = true;
     if ( newTitle.trim() != '' ) {
-        if (projectsList.length > 0) {
-            for (let i = 0; i < projectsList.length; i++) {
-                const currentProject = projectsList[i];
+        
+        if ( renameInput.classList.contains('invalid') ) {
+            deleteErrorParagraph(renameInput);
+            renameInput.classList.remove('invalid');
+        }
+
+        for (let i = 0; i < projectsList.length; i++) {
+            const currentProject = projectsList[i];
+            if (currentProject.title == newTitle) {
+                if ( !renameInput.classList.contains('invalid') ) {
+                    createErrorParagraph(renameInput);
+                    renameInput.classList.add('invalid');
+                }
+                allowToRename = false;
+            }
+        }
+
+        if (allowToRename) {
+            for (let j = 0; j < projectsList.length; j++) {
+                const currentProject = projectsList[j];
+                
                 if (currentProject.title == previousTitle) {
                     currentProject.title = newTitle;
                     saveInLocalStorage(projectsList);
                     showAllProjects(projectsList);
-                    highlightProject(projectsList[i]);
-                    showAllTodos(projectsList[i].todos, projectsList[i].todos, projectsList);
+                    highlightProject(projectsList[j]);
+                    showAllTodos(projectsList[j].todos, projectsList[j].todos, projectsList);
                     renameProjectBlock.classList.add('hidden-rename');
                     renameProjectBlockForm.classList.add('hidden-form-rename');
                 }
             }
         }
     } else {
-        createErrorParagraph(renameInput);
-        renameInput.classList.add('invalid');
+        if ( !renameInput.classList.contains('invalid') ) {
+            createErrorParagraph(renameInput);
+            renameInput.classList.add('invalid');
+        }
     }
 }
 

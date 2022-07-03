@@ -142,6 +142,13 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
             } else if ( clickedObject.closest('.rename-project-block__closing-button') || clickedObject.closest('.rename-project-block') && !clickedObject.closest('.rename-project-block__form')) {
                 renameProjectBlock.classList.add('hidden-rename');
                 renameProjectBlockForm.classList.add('hidden-form-rename');
+                const renameInput = renameProjectBlockForm.querySelector('#rename-project-title-block');
+                
+                renameInput.value = '';
+                if ( renameInput.classList.contains('invalid') ) {
+                    deleteErrorParagraph(renameInput);
+                    renameInput.classList.remove('invalid');
+                }
             }
         }
     }
@@ -250,7 +257,6 @@ import {saveInLocalStorage, getFromLocalStorage} from './modules/localStorage';
                 addToProjectsList(currentProject, projectsList);
                 saveInLocalStorage(projectsList);
                 showAllProjects(projectsList);
-                console.log(currentHighlightedProjectInDOM);
                 highlightProject(chosenProject);
                 
                 newProject.classList.add('hidden');
